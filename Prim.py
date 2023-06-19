@@ -31,21 +31,21 @@ def prim(tree):
     heapify(que)
 
     while que:
-        weight, v_curr, v_next = heappop(que)
+        weight, v_prev, v_curr = heappop(que)
 
         # 次の頂点が訪問済みならスキップ
-        if seen[v_next]:
+        if seen[v_curr]:
             continue
 
-        seen[v_next] = True
+        seen[v_curr] = True
 
         # 最小全域木の情報を更新
         total_weight += weight
-        mst_edges.add((v_curr, v_next, weight))
+        mst_edges.add((v_prev, v_curr, weight))
 
         # 今見ている頂点(v_next)から伸びる辺の情報を優先度付きキューに追加
-        for nv, ncost in tree[v_next]:
-            heappush(que, (ncost, v_next, nv))
+        for v_next, ncost in tree[v_curr]:
+            heappush(que, (ncost, v_curr, v_next))
 
     return total_weight, mst_edges
 
